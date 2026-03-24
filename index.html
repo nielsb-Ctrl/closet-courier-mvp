@@ -89,15 +89,7 @@
 
     /* ─── HERO ─── */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 5rem;
-      position: relative;
-      overflow: hidden;
+      /* overridden by grid layout above */
     }
     .hero-bg {
       position: absolute;
@@ -267,6 +259,121 @@
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
+    }
+
+    /* ─── HERO SPLIT ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 5rem 5rem;
+      position: relative;
+      overflow: hidden;
+      gap: 4rem;
+    }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-text .badge { justify-content: flex-start; }
+    .hero-text h1 { text-align: left; }
+    .hero-text .hero-sub { text-align: left; margin: 0 0 2.5rem; }
+    .hero-text .hero-actions { justify-content: flex-start; }
+    .hero-photos {
+      position: relative;
+      z-index: 1;
+      height: 560px;
+    }
+    .hero-photo-main {
+      position: absolute;
+      top: 0; right: 0;
+      width: 88%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      filter: brightness(0.88);
+    }
+    .hero-photo-accent {
+      position: absolute;
+      bottom: -1.5rem;
+      left: 0;
+      width: 52%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 4px solid var(--dark);
+      filter: brightness(0.9);
+    }
+    .hero-photo-tag {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      background: rgba(12,12,12,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 2rem 4rem;
+        text-align: center;
+        gap: 3rem;
+      }
+      .hero-text .badge { justify-content: center; }
+      .hero-text h1,
+      .hero-text .hero-sub { text-align: center; }
+      .hero-text .hero-actions { justify-content: center; }
+      .hero-photos { height: 340px; }
+      .hero-scroll { display: none; }
+    }
+
+    /* ─── GALLERY ─── */
+    .gallery {
+      padding: 5rem 2rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:last-child { display: none; }
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .gallery-item:first-child { grid-row: span 1; }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease, filter 0.3s ease;
+      filter: brightness(0.8) saturate(0.9);
+    }
+    .gallery-item:hover img { transform: scale(1.04); filter: brightness(0.9) saturate(1); }
+    .gallery-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.25rem 1.25rem 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold-light);
     }
 
     /* ─── HOW IT WORKS ─── */
@@ -583,25 +690,36 @@
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
 
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Same-day pickup available
+    <!-- Left: text -->
+    <div class="hero-text">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Same-day pickup available
+      </div>
+      <h1>Your packages,<br><em>delivered.</em><br>You, staying home.</h1>
+      <p class="hero-sub">
+        We collect your parcels at the door and drop them off at the carrier.
+        No queues. No hassle. No leaving.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#pickup">
+          Schedule a pickup <span class="arrow">→</span>
+        </a>
+        <a class="btn-ghost" href="#how">
+          How it works ↓
+        </a>
+      </div>
     </div>
 
-    <h1>Your packages,<br><em>delivered.</em><br>You, staying home.</h1>
-
-    <p class="hero-sub">
-      We collect your parcels at the door and drop them off at the carrier.
-      No queues. No hassle. No leaving.
-    </p>
-
-    <div class="hero-actions">
-      <a class="btn-primary" href="#pickup">
-        Schedule a pickup <span class="arrow">→</span>
-      </a>
-      <a class="btn-ghost" href="#how">
-        How it works ↓
-      </a>
+    <!-- Right: photos -->
+    <div class="hero-photos">
+      <img class="hero-photo-main"
+        src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=900&q=80"
+        alt="Cozy home interior" />
+      <img class="hero-photo-accent"
+        src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=500&q=80"
+        alt="Packages ready to ship" />
+      <div class="hero-photo-tag">✦ Free first month</div>
     </div>
 
     <div class="hero-scroll">
@@ -625,6 +743,30 @@
       <div class="marquee-item"><span>★</span> Any carrier accepted</div>
       <div class="marquee-item"><span>★</span> Confirmation every time</div>
       <div class="marquee-item"><span>★</span> Fragile items welcome</div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="gallery reveal">
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1592853625601-6b945fb17f16?auto=format&fit=crop&w=800&q=80"
+          alt="Package at doorstep" loading="lazy" />
+        <div class="gallery-caption">Doorstep pickup</div>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80"
+          alt="Packages ready to ship" loading="lazy" />
+        <div class="gallery-caption">Same day</div>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=80"
+          alt="Relaxing at home" loading="lazy" />
+        <div class="gallery-caption">You stay home</div>
+      </div>
     </div>
   </div>
 
